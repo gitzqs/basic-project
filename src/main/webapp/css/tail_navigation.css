@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+
+.tail_span_word_1{
+	color : #1E90FF;
+}
+
+.tail_span_word_2{
+	color : #FF0000;
+}
+
+.tail_div_1{
+	float : left;
+	padding-top : 17px;
+	padding-left : 10px;
+}
+
+.tail_div_2{
+	float : right;
+}
+
+.tail_table_input{
+	background-color:transparent;
+	border:1px solid #b5a342;
+	width:55px;
+	height:30px;
+	text-align:center;
+}
+
+.btn-primary2{
+	color:#fff;
+	background-color:#969696;
+	border-color:#969696
+	}
+	
+.btn-edit2{
+	color:#fff;
+	background-color:#228B22;
+	border-color:#228B22
+}
+
+.tail_select{
+	width:50px;
+	height:30px;
+}
+
+.pageContainer_other{
+	background-color : #B7B7B7;	
+}
