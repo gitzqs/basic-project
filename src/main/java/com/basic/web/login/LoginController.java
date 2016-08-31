@@ -63,7 +63,7 @@ public class LoginController {
 		currentUser.logout();
 		
 		if(!currentUser.isAuthenticated()){
-			UsernamePasswordToken token = new UsernamePasswordToken(username,password,false,HttpRequestInfoUtil.getRemoteAddr(request));
+			UsernamePasswordToken token = new UsernamePasswordToken(username,password,true,HttpRequestInfoUtil.getRemoteAddr(request));
 			try{
 				currentUser.login(token);
 			}catch(AuthenticationException ex){

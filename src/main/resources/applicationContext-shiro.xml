@@ -12,15 +12,24 @@
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     
     
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />  
+    
   	<!-- 配置权限管理器 -->  
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">    
         <!-- ref对应我们写的realm  MyShiro -->  
-        <property name="realm" ref="myRealm"/>    
+        <property name="realm" ref="shiroDbRealm"/>    
         <!-- 使用下面配置的缓存管理器 -->  
-        <property name="cacheManager" ref="cacheManager"/>    
+        <property name="cacheManager" ref="shiroEhcacheManager"/>    
     </bean>  
+    
     <!-- 自定义Realm,继承 AuthorizingRealm-->
-    <bean id="myRealm" class="com.basic.service.base.MyRealm"></bean>
+    <bean id="shiroDbRealm" class="com.basic.service.base.ShiroDbRealm">
+    	<property name="authorizationCachingEnabled" value="true"/>
+    </bean>
+    
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager">
+    	<!-- <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/> -->
+    </bean> 
     
     <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->  
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">   
@@ -50,7 +59,10 @@
         </property>    
     </bean>  
     
-    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />    
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />   
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+       
+     
     
 </beans>

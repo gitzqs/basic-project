@@ -22,8 +22,7 @@
     <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:spring-mvc.xml,
-			classpath:applicationContext.xml
+			classpath:spring-mvc.xml
 		</param-value>
 	</context-param>
 	
@@ -139,5 +138,5 @@
 	<listener> 
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class> 
 	</listener> 
-
+	
 </web-app>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.basic.dao.database.IUserDatabaseMapper">
+	<resultMap id="userDatabaseMap" type="userDatabase" >
+		<id column="ID" property="id" jdbcType="DECIMAL"/>
+		<result column="USER_ID" property="user.id" jdbcType="DECIMAL"/>
+		<result column="DATABASE_NAME" property="databaseName" jdbcType="VARCHAR"/>
+		<result column="DATABASE_DRIVER" property="databaseDriver" jdbcType="VARCHAR"/>
+		<result column="DATABASE_URL" property="databaseUrl" jdbcType="VARCHAR"/>
+		
+		<result column="DATABASE_USER" property="databaseUser" jdbcType="VARCHAR"/>
+		<result column="DATABASE_PASSWORD" property="databasePassword" jdbcType="VARCHAR"/>
+		<result column="STATUS" property="status" jdbcType="VARCHAR"/>
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+		
+		<result column="CREATOR_ID" property="info.creatorId" jdbcType="DECIMAL"/>
+		<result column="CREATOR" property="info.creator" jdbcType="VARCHAR"/>
+		<result column="CREATED_TIME" property="info.createdTime" jdbcType="TIMESTAMP"/>
+		<result column="LAST_OPERATOR_ID" property="info.lastOperatorId" jdbcType="DECIMAL"/>
+		<result column="LAST_OPERATOR" property="info.lastOperator" jdbcType="VARCHAR"/>
+		<result column="LAST_OPERATED_TIME" property="info.lastOperatedTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<sql id="base_column">
+		u.ID,u.DATABASE_DRIVER,u.DATABASE_URL,u.DATABASE_NAME,u.DATABASE_USER,u.DATABASE_PASSWORD,u.STATUS,u.DESCRIPTION,u.CREATOR_ID,u.CREATOR,
+		u.CREATED_TIME,u.LAST_OPERATOR_ID,u.LAST_OPERATOR,u.LAST_OPERATED_TIME,s.USERNAME
+	</sql>
+	
+	<sql id="sql_table">
+		FROM USER_DATABASE u
+		LEFT JOIN SYS_USER s on u.USER_ID = s.ID
+	</sql>
+	
+	<sql id="sql_where">
+		WHERE 1=1
+	</sql>
+	
+	<sql id="orderBy">
+		<choose>
+			<when test="sort !=null">
+				ORDER BY ${sort} ${order}
+			</when>
+			<otherwise>
+				ORDER BY u.ID
+			</otherwise>
+		</choose>
+	</sql>
+	
+	
+	<!-- 分页查询 begin -->
+	<select id="page" parameterType="Map" resultType="Map">
+		SELECT
+		<include refid="base_column"/>
+		<include refid="sql_table"/>
+		<include refid="sql_where"/>
+		<include refid="orderBy"/>
+		LIMIT #{offset} , #{rows}
+	</select>
+	
+	<select id="total" parameterType="Map" resultType="Long">
+		SELECT COUNT(1) 
+		<include refid="sql_table"/>
+		<include refid="sql_where"/>
+	</select>
+	<!-- 分页查询 end -->
+	
+	<!-- 根据user_id查询对应的数据库信息 begin -->
+	<select id="loadByUserId" parameterType="Long" resultMap="userDatabaseMap">
+		SELECT DATABASE_DRIVER,DATABASE_URL,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD
+		FROM USER_DATABASE
+		WHERE USER_ID = #{userId}
+		AND STATUS = 'ENABLED'
+	</select>
+	<!-- 根据user_id查询对应的数据库信息 end -->
+	
+	
+</mapper>

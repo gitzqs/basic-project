@@ -37,6 +37,10 @@
 		
 		<!-- sys end -->
 		
+		<!-- database begin -->
+		<typeAlias type="com.basic.model.database.UserDatabase" alias="userDatabase"/>
+		<!-- database end -->
+		
 	</typeAliases>
 	
 	<!-- 自定义mybatis jdbcType -->

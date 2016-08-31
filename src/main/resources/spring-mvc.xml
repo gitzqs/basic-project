@@ -97,7 +97,7 @@
         <property name="suffix" value=".jsp" />
     </bean>
     
-    <import resource="applicationContext.xml"/>
+    <import resource="applicationContext_2.xml"/>
     <import resource="applicationContext-shiro.xml"/>
     
 </beans>
