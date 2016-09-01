@@ -82,30 +82,7 @@ public class PreprocessingMybatisSql implements Interceptor {
             boundSql.setAdditionalParameter("createdTime", new Date());
         } else if (sqlCommandType.equals(SqlCommandType.SELECT)) {
             logger.debug(".begin to set additional params with warehouse");
-            Subject subject = null;
-            try {
-                subject = SecurityUtils.getSubject();
-            } catch (Exception ex) {
-                logger.info("can't get current user, may be not authenticated! \n\t exception is :{}", ex.getLocalizedMessage());
-            }
             
-            /** 获取当前登录仓库/平台 /货主*/
-            if (subject != null) {
-                Long warehouseId = (Long) subject.getSession().getAttribute("WAREHOUSE_ID");
-                String warehouseCode = (String) subject.getSession().getAttribute("WAREHOUSE_CODE");
-                boundSql.setAdditionalParameter("currentWarehouseId", warehouseId == null ? -1 : warehouseId);
-                boundSql.setAdditionalParameter("currentWarehouseCode", warehouseCode == null ? "-" : warehouseCode);
-                
-                Long platFormId = (Long) subject.getSession().getAttribute("PLATFORM_ID");
-                String platFormCode = (String) subject.getSession().getAttribute("PLATFORM_CODE");
-                boundSql.setAdditionalParameter("currentPlatFormId", platFormId == null ? -1 : platFormId);
-                boundSql.setAdditionalParameter("currentPlatFormCode", platFormCode == null ? "-" : platFormCode);
-
-                Long ownerId = (Long) subject.getSession().getAttribute("OWNER_ID");
-                String ownerCode = (String) subject.getSession().getAttribute("OWNER_CODE");
-                boundSql.setAdditionalParameter("currentOwnerId", ownerId == null ? -1 : ownerId);
-                boundSql.setAdditionalParameter("currentOwnerCode", ownerCode == null ? "-" : ownerCode);
-            }
         }
         return invocation.proceed();
     }

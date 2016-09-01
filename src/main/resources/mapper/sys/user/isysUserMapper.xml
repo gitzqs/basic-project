@@ -76,8 +76,8 @@
 	
 	<!-- 新增用户 begin -->
 	<insert id="insert" parameterType="sysUser" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO SYS_USER(USERNAME,PASSWORD,STATUS)VALUES(
-			#{username},#{password},'ENABLED'
+		INSERT INTO SYS_USER(USERNAME,PASSWORD,STATUS,CREATOR_ID,CREATOR,CREATED_TIME)VALUES(
+			#{username},#{password},'ENABLED',#{info.creatorId},#{info.creator},#{info.createdTime}
 		)
 	</insert>
 	<!-- 新增用户 end -->

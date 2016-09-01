@@ -97,6 +97,16 @@
         <property name="suffix" value=".jsp" />
     </bean>
     
+    <!-- 读取配置文件注解 -->
+    <bean id="propertyBean"  
+    	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	    <property name="locations">  
+	        <array>  
+	            <value>classpath:*.properties</value>  
+	        </array>  
+	    </property>  
+	</bean>  
+    
     <import resource="applicationContext_2.xml"/>
     <import resource="applicationContext-shiro.xml"/>
     

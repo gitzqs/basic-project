@@ -10,6 +10,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.basic.dao.database.IUserDatabaseMapper;
@@ -17,7 +18,6 @@ import com.basic.dao.sys.user.ISysUserMapper;
 import com.basic.model.base.ReturnData;
 import com.basic.model.sys.user.SysUser;
 import com.basic.service.sys.user.ISysUserService;
-import com.basic.util.PropertiesUtils;
 import com.basic.util.String.StringUtils;
 import com.basic.util.json.JacksonUtils;
 import com.basic.util.mysql.DatabaseCreatorMysql;
@@ -33,6 +33,15 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 	private DatabaseCreatorMysql databaseCreator = new DatabaseCreatorMysql();
 	
 	private static Logger logger = LoggerFactory.getLogger(DefaultSysUserServiceImpl.class);
+	
+	@Value("${jdbc.driver}")
+	private String driver;
+	@Value("${jdbc.incomplete.url}")
+	private String inconpleteUrl;
+	@Value("${jdbc.username}")
+	private String databaseUsername;
+	@Value("${jdbc.password}")
+	private String databasePassword;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -63,6 +72,7 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 	@Override
 	public String registerAdd(String username, String password,
 			String password_again,HttpServletRequest request) {
+		
 		//初始化
 		Map<String,Object> returnParams = new HashMap<String,Object>();
 		String returnCode = ReturnData.FAIL_CODE;
@@ -92,12 +102,12 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 								//6、新建用户-数据库对应关系
 								Map<String,Object> params = new HashMap<String,Object>();
 								params.put("userId", userId);
-								params.put("databaseDriver", PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.driver"));
-								params.put("databaseUrl", PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.incomplete.url")
+								params.put("databaseDriver", this.driver);
+								params.put("databaseUrl",this.inconpleteUrl
 										+databaseName+"?useUnicode=true&characterEncoding=utf-8");
 								params.put("databaseName", databaseName);
-								params.put("databaseUser", PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.username"));
-								params.put("databasePassword", PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.username"));
+								params.put("databaseUser", this.databaseUsername);
+								params.put("databasePassword", this.databasePassword);
 								int index_2 = userDatabaseMapper.insert(params);
 								if(index_2 > 0){
 									returnCode = ReturnData.SUCCESS_CODE;
