@@ -41,7 +41,7 @@
 				ORDER BY ${sort} ${order}
 			</when>
 			<otherwise>
-				ORDER BY ID
+				ORDER BY ID DESC
 			</otherwise>
 		</choose>
 	</sql>
@@ -73,5 +73,13 @@
 			AND STATUS = 'ENABLED'
 	</select>
 	<!-- 根据username查询 end -->
+	
+	<!-- 新增用户 begin -->
+	<insert id="insert" parameterType="sysUser" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO SYS_USER(USERNAME,PASSWORD,STATUS)VALUES(
+			#{username},#{password},'ENABLED'
+		)
+	</insert>
+	<!-- 新增用户 end -->
 	
 </mapper>

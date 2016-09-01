@@ -10,7 +10,12 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import com.basic.model.database.UserDatabase;
 import com.basic.service.database.IUserDatabaseService;
 import com.basic.util.String.StringUtils;
-
+/**
+ * 动态切换数据源
+ * 
+ * @author qiushi.zhou  
+ * @date 2016年8月31日 下午5:25:00
+ */
 public class DynamicDataSource extends AbstractRoutingDataSource{
 	
 	public  static String DEFAULT_DATA_SOURCE = "dataSource_1";

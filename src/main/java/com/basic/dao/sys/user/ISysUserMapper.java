@@ -17,4 +17,12 @@ public interface ISysUserMapper extends IBaseMapper<SysUser>{
 	 * @return SysUser
 	 */
 	SysUser loadByUsername(String username);
+	
+	/**
+	 * 新增用户
+	 * 
+	 * @param 
+	 * @return int
+	 */
+	int insert(SysUser user);
 }

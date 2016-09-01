@@ -1,5 +1,7 @@
 package com.basic.service.sys.user;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.basic.model.sys.user.SysUser;
@@ -20,4 +22,13 @@ public interface ISysUserService extends IBaseService{
 	 */
 	@Transactional
 	SysUser loadByUsername(String username);
+	
+	/**
+	 * 注册
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	String registerAdd(String username,String password,String password_again,HttpServletRequest request);
 }

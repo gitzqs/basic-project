@@ -26,4 +26,9 @@ public interface ReturnData {
 	String DATA_EXIST_CODE = "0002";
 	
 	String DATA_EXIST_MSG = "数据已经存在";
+	
+	/** 两次参数不相等**/
+	String DATA_NOT_EQUAL_CODE = "0003";
+	
+	String DATA_NOT_EQUAL_MSG = "两次参数不相等";
 }

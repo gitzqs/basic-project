@@ -1,47 +1,104 @@
 package com.basic.util.mysql;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.basic.model.base.ReturnData;
+import com.basic.util.PropertiesUtils;
+/**
+ * 创建数据库并导入sql文件
+ * 
+ * @author qiushi.zhou  
+ * @date 2016年9月1日 上午8:54:06
+ */
 public class DatabaseCreatorMysql{
 	
-	String mysqlDriver = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://localhost:3306/test";
-	String newUrl = "jdbc:mysql://localhost:3306/";
-	String username = "root";
-	String password = "root";
+	private static Logger logger = LoggerFactory.getLogger(DatabaseCreatorMysql.class);
+	
+	private static String mysqlDriver = PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.driver");
+	private static String url = PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.url");
+	private static String username = PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.username");
+	private static String password = PropertiesUtils.getPropertyByKey("jdbc.properties", "jdbc.username");
 	Connection conn = null;
 	Connection newConn = null;
 	
-	public static void main(String[] args){
-		String database = "test3";
-		new DatabaseCreatorMysql().getConn(database);
+	
+	public String databaseCreateAndImportMysql(String databaseName,String sqlFilePath){
+		String result = null;
+		if(this.createDatabase(databaseName).equals(ReturnData.SUCCESS_CODE)){
+			result = this.initializeDatabase(databaseName, sqlFilePath);	
+		}
+		return result;
 	}
 	
-	public Connection getConn(String database){
-		
+	/** 
+	 * 创建数据库
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	public String createDatabase(String database){
+		String returnResult = ReturnData.FAIL_CODE;
 		try{
 			Class.forName(mysqlDriver);
+			
+			try{
+				String databaseSql = "create database " +database;
+				conn = DriverManager.getConnection(url,username,password);
+				if(conn !=null){
+					Statement smt = conn.createStatement();
+					smt.executeUpdate(databaseSql);
+					returnResult = ReturnData.SUCCESS_CODE;
+				}
+			}catch(Exception e2){
+				logger.error("创建数据库失败：[{}]",e2);
+			}
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error("加载mysql驱动失败：[{}]",e);
 		}
 		
-		try{
-			String databaseSql = "create database " +database;
-			conn = DriverManager.getConnection(url,username,password);
-			Statement smt = conn.createStatement();
-			if(conn !=null){
-				System.out.println("数据库连接成功！");
-				smt.executeUpdate(databaseSql);
-				newConn = DriverManager.getConnection(newUrl+database,username,password);
-				if(newConn !=null){
-					System.out.println("已经连接到新创建的数据库:"+database);
-				}
-			}
-		}catch(Exception e2){
-			e2.printStackTrace();
-		}
-		return conn;
+		return returnResult;
 	}
+	
+	/** 
+	 * 导入sql文件
+	 * 
+	 * @param 
+	 * @return void
+	 */
+	@Transactional
+	public String initializeDatabase(String databaseName, String sqlFilePath) {
+		String returnResult = ReturnData.SUCCESS_CODE;
+		try {
+
+			StringBuffer sb = new StringBuffer("cmd.exe /C mysql -u");
+			sb.append(username);
+
+			if (password != null && !password.equalsIgnoreCase(""))
+				sb.append(" -p").append(password);
+
+			sb.append(" ").append(databaseName).append("<")
+					.append(sqlFilePath);
+			java.lang.Runtime.getRuntime().exec(sb.toString());
+
+		} catch (IOException e) {
+			returnResult = ReturnData.FAIL_CODE;
+			logger.error("导入sql文件失败:[{}]",e);
+		}
+		return returnResult;
+
+	} 
+	 
+	 public static void main(String[] args){
+		 String databaseName = "test3";
+		 String sqlFilePath = "D:/root.sql";
+		 new DatabaseCreatorMysql().databaseCreateAndImportMysql(databaseName, sqlFilePath);
+		}
 }

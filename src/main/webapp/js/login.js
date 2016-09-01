@@ -50,3 +50,45 @@ function showDiv(value){
 function hideDiv(){
 	$("#tipsDiv").css("visibility","hidden");
 }
+
+/** 注册*/
+function register(){
+	var username = $("#username").val();
+	var password = $("#password").val();
+	var password_again = $("#password_again").val();
+	if(username == null || username == ''){
+		showDiv("用户名不能为空！");
+		return ;
+	}
+	if(password == null || password == ''){
+		showDiv("密码不能为空！");
+		return;
+	}
+	if(password != password_again){
+		showDiv("两次输入密码必须一致！");
+		return ;
+	}
+	
+	hideDiv();
+	
+	$.ajax({
+		url : postPath +"/login/register_add",
+		type : 'post',
+		contextType : 'applicationContext/json;charset=utf-8',
+		data : {
+			username : username,
+			password : password,
+			password_again : password_again
+		},
+		dataType : 'JSON',
+		cache : false,
+		success : function(data){
+			if(data.returnCode == '0000'){
+				alert("注册成功");
+				window.location.href = postPath + "/login/";
+			}else{
+				showDiv(data.returnMsg);
+			}
+		}
+	});
+}

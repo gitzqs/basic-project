@@ -12,4 +12,5 @@ public interface IUserDatabaseMapper extends IBaseMapper<UserDatabase>{
 	 * @return UserDatabase
 	 */
 	UserDatabase loadByUserId(Long userId);
+	
 }

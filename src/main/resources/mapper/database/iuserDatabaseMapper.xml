@@ -22,8 +22,12 @@
 	</resultMap>
 	
 	<sql id="base_column">
-		u.ID,u.DATABASE_DRIVER,u.DATABASE_URL,u.DATABASE_NAME,u.DATABASE_USER,u.DATABASE_PASSWORD,u.STATUS,u.DESCRIPTION,u.CREATOR_ID,u.CREATOR,
-		u.CREATED_TIME,u.LAST_OPERATOR_ID,u.LAST_OPERATOR,u.LAST_OPERATED_TIME,s.USERNAME
+		u.ID,u.DATABASE_DRIVER,u.DATABASE_URL,u.DATABASE_NAME,u.DATABASE_USER,u.DATABASE_PASSWORD,u.DESCRIPTION,u.CREATOR_ID,u.CREATOR,
+		u.CREATED_TIME,u.LAST_OPERATOR_ID,u.LAST_OPERATOR,u.LAST_OPERATED_TIME,s.USERNAME,
+		case u.STATUS
+		when 'ENABLED' then '生效'
+		when 'DISABLED' then '失效'
+		else '-' end as STATUS
 	</sql>
 	
 	<sql id="sql_table">
@@ -41,7 +45,7 @@
 				ORDER BY ${sort} ${order}
 			</when>
 			<otherwise>
-				ORDER BY u.ID
+				ORDER BY u.ID DESC
 			</otherwise>
 		</choose>
 	</sql>
@@ -72,6 +76,16 @@
 		AND STATUS = 'ENABLED'
 	</select>
 	<!-- 根据user_id查询对应的数据库信息 end -->
+	
+	<!-- 新增用户-数据库对应关系  begin-->
+	<insert id="insert" parameterType="Map">
+		INSERT INTO USER_DATABASE(USER_ID,DATABASE_DRIVER,DATABASE_URL,
+		DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD,STATUS)VALUES(
+		#{userId},#{databaseDriver},#{databaseUrl},#{databaseName},
+		#{databaseUser},#{databasePassword},'ENABLED'
+		)
+	</insert>
+	<!-- 新建用户-数据库对应关系 end -->
 	
 	
 </mapper>

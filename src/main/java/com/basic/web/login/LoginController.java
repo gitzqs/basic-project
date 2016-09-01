@@ -13,11 +13,13 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.basic.service.sys.user.ISysUserService;
 import com.basic.util.http.HttpRequestInfoUtil;
 import com.basic.util.json.JacksonUtils;
 
@@ -32,6 +34,9 @@ import com.basic.util.json.JacksonUtils;
 public class LoginController {
 	
 	 private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	 
+	 @Autowired
+	 private ISysUserService sysUserService;
 	
 	/**
 	 * 登录页面
@@ -79,9 +84,22 @@ public class LoginController {
 		return JacksonUtils.object2json(result);
 	}
 	
-	@RequestMapping(value="/test")
-	public String test(){
-		return "index";
+	/**
+	 * 注册页面
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@RequestMapping(value="register",method=RequestMethod.GET)
+	public String register(){
+		return "login/register";
+	}
+	
+	@RequestMapping(value="/register_add",method=RequestMethod.POST)
+	@ResponseBody
+	public String register_add(String username,String password,String password_again,HttpServletRequest request){
+		
+		return sysUserService.registerAdd(username, password, password_again, request);
 	}
 	
 	@RequestMapping(value="/welcome")

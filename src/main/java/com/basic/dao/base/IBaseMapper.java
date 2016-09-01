@@ -57,6 +57,14 @@ public interface IBaseMapper<T extends Entity> {
 	void save(T entity);
 	
 	/**
+	 * 新增
+	 * 
+	 * @param 
+	 * @return int
+	 */
+	int insert(Map<String,Object> params);
+	
+	/**
 	 * 更新
 	 * 
 	 * @param entity 

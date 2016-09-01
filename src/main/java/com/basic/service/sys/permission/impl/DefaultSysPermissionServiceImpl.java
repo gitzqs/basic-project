@@ -40,12 +40,12 @@ public class DefaultSysPermissionServiceImpl implements ISysPermissionService {
 	@Override
 	public List<Map<String, Object>> loadUserPermission(String username) {
 		//初始化权限子目录
-		List<Map<String,Object>> childList = new ArrayList<Map<String,Object>>();
+		
 		//获取权限主目录
 		List<Map<String,Object>> mainList = sysPermissionMapper.loadMainPermissionByUsername(username);
 		if(mainList !=null && mainList.size() >0){
 			for(int i=0; i<mainList.size(); i++){
-				childList.clear();
+				List<Map<String,Object>> childList = new ArrayList<Map<String,Object>>();
 				childList = sysPermissionMapper.loadChildPermission(Long.parseLong(mainList.get(i).get("ID").toString()));
 				mainList.get(i).put("childList", childList);
 			}
