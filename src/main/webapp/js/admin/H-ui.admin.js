@@ -133,7 +133,7 @@ function removeIframe(){
 	w		弹出层宽度（缺省调默认值）
 	h		弹出层高度（缺省调默认值）
 */
-function layer_show(title,url,w,h){
+function layer_show(title,url,w,h,param){
 	if (title == null || title == '') {
 		title=false;
 	};
@@ -146,6 +146,9 @@ function layer_show(title,url,w,h){
 	if (h == null || h == '') {
 		h=($(window).height() - 50);
 	};
+	if(param != undefined){
+		url = url+"?id="+param;
+	}
 	layer.open({
 		type: 2,
 		area: [w+'px', h +'px'],
@@ -153,7 +156,10 @@ function layer_show(title,url,w,h){
 		maxmin: true,
 		shade:0.4,
 		title: title,
-		content: url
+		content: url,
+		end : function(){
+			location.reload();
+		}
 	});
 }
 /*关闭弹出框口*/

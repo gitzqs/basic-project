@@ -46,3 +46,11 @@
 .pageContainer_other{
 	background-color : #B7B7B7;	
 }
+
+.tail_table_query_input{
+	background-color:transparent;
+	border:1px solid #b5a342;
+	width:55px;
+	height:30px;
+	text-align:center;
+}

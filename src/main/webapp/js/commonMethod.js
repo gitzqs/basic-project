@@ -25,8 +25,7 @@ function add_operation(bean){
 						$("#"+bean+"_div").css('visibility','visible');
 						setTimeout(function(){
 							layer_close();
-						},1000);
-						
+						},500);
 						
 					}else{
 						alert(data.returnMsg);
@@ -37,15 +36,90 @@ function add_operation(bean){
 	});
 }
 
+/** 选择框情况判断**/
+function judgeSelect(bean){
+	var str = '';
+	$("input[name="+bean+"_checkbox]:checked").each(function(){
+		str += $(this).val() + ",";
+	});
+	return str;
+}
 
-/** 编辑**/
-function edit(title,url,w,h){
+/** 编辑-页面跳转**/
+function edit(title,url,w,h,bean){
+	var str = judgeSelect(bean);
+	if(str == '' || str == null){
+		alert("请选择要编辑的记录！");
+		return ;
+	}
+	if(str.split(",").length > 2){
+		alert("只能选择一条记录进行编辑！");
+		return ;
+	}
+	layer_show(title,url,w,h,str.split(",")[0]);
 	
 }
 
+/** 编辑-逻辑处理**/
+function edit_operation(bean){
+	
+	var formName = bean+"_edit_form";
+	
+	$("#"+formName).validate({
+		submitHandler : function(form){
+			$.ajax({
+				url : postPath+"/"+bean+"/edit_operation",
+				type : 'post',
+				data : $("#"+formName).serialize(),
+				dataType : 'json',
+				contextType : 'applicationContext/json;charset=utf-8',
+				cache : false,
+				success : function(data){
+					if(data.returnCode == '0000'){
+						$("#"+bean+"_span").html(data.returnMsg);
+						$("#"+bean+"_div").css('visibility','visible');
+						setTimeout(function(){
+							layer_close();
+						},500);
+						
+					}else{
+						alert(data.returnMsg);
+					}
+				}
+			});
+		}
+	});
+}
 
-
-
+/** 删除操作**/
+function remove(bean){
+	var ids = judgeSelect(bean);
+	if(ids == null || ids == ''){
+		alert("请选中至少一条记录！");
+		return ;
+	}
+	if(confirm("是否确定删除？")){
+		$.ajax({
+			url : postPath+ "/" +bean+ "/remove",
+			type : 'POST',
+			contextType : 'applicationContext/json;charset=utf-8',
+			data : {
+				ids : ids
+			},
+			dataType : 'JSON',
+			cache : false,
+			success : function(data){
+				if(data.returnCode == '0000'){
+					alert("删除成功！");
+					location.reload();
+				}else{
+					alert(data.returnMsg);
+				}
+			}
+		});
+	}
+	
+}
 
 /************  表单验证   ******************/
 $.extend($.validator.messages, {

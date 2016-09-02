@@ -1,5 +1,6 @@
 package com.basic.service.sys.role.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,100 @@ public class DefaultSysRoleServiceImpl implements ISysRoleService {
 		returnParams.put("returnCode", returnCode);
 		returnParams.put("returnMsg", returnMsg);
 		return JacksonUtils.object2json(returnParams);
+	}
+
+	@Override
+	public SysRole loadByParam(Map<String, Object> params) {
+		return sysRoleMapper.loadByParam(params);
+	}
+
+	@Override
+	public String editRoleOperation(Map<String, Object> params) {
+		// 初始化
+		Map<String, Object> returnParams = new HashMap<String, Object>();
+		String returnCode = ReturnData.SUCCESS_CODE;
+		String returnMsg = "编辑角色成功!";
+
+		// 获取参数
+		String id = params.get("id") == null ? StringUtils.EMPTY 
+				: params.get("id").toString();
+		String code = params.get("code") == null ? StringUtils.EMPTY 
+				: params.get("code").toString();
+		String name = params.get("name") == null ? StringUtils.EMPTY 
+				: params.get("name").toString();
+		String description = params.get("description") == null ? StringUtils.EMPTY
+				: params.get("description").toString();
+
+		// 1、验证id是否存在
+		if (!StringUtils.isEmpty(id)) {
+			if(!StringUtils.isEmpty(code) && !StringUtils.isEmpty(name)){
+				// 2、验证code是否唯一
+				params.clear();
+				params.put("code", code);
+				params.put("status", "ENABLED");
+				int index = sysRoleMapper.judgeOnlyByCodeOrName(params);
+				if (index == 0) {
+					// 4、验证name是否唯一
+					params.clear();
+					params.put("name", name);
+					params.put("status", "ENABLED");
+					index = sysRoleMapper.judgeOnlyByCodeOrName(params);
+					if (index == 0) {
+						// 5、更新
+						SysRole role = new SysRole();
+						role.setId(Long.parseLong(id));
+						role.setCode(code);
+						role.setName(name);
+						role.setDescription(description);
+						try{
+							sysRoleMapper.update(role);
+						}catch(Exception e){
+							returnCode = ReturnData.FAIL_CODE;
+							returnMsg = "编辑发生故障！";
+							logger.error("update failed : [{}]",e);
+							
+						}
+						
+					} else {
+						returnCode = ReturnData.DATA_EXIST_CODE;
+						returnMsg = "角色名称已经存在！";
+					}
+				} else {
+					returnCode = ReturnData.DATA_EXIST_CODE;
+					returnMsg = "角色代码已经存在！";
+				}
+			}else{
+				returnCode = ReturnData.EMPTY_PARAMETER_CODE;
+				returnMsg = "角色代码、角色名称不能为空！";
+			}
+			
+		} else {
+			returnCode = ReturnData.UNKNOWN_ERROR_CODE;
+			returnMsg = ReturnData.UNKNOWN_ERROR_MSG;
+		}
+		returnParams.put("returnCode", returnCode);
+		returnParams.put("returnMsg", returnMsg);
+		return JacksonUtils.object2json(returnParams);
+	}
+
+	@Override
+	public String remove(String ids) {
+		Map<String,Object> params = new HashMap<String,Object>();
+		String returnCode = ReturnData.SUCCESS_CODE;
+		String returnMsg = "删除成功！";
+		
+		List<String> idList = new ArrayList<String>();
+		if(!StringUtils.isEmpty(ids)){
+			idList = StringUtils.stringToList(ids);
+			sysRoleMapper.remove(idList);
+		}else{
+			returnCode = ReturnData.EMPTY_PARAMETER_CODE;
+			returnMsg = "请选中至少一条记录！";
+		}
+		params.put("returnCode", returnCode);
+		params.put("returnMsg", returnMsg);
+		
+		return JacksonUtils.object2json(params);
 	}
 
 }

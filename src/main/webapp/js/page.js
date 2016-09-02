@@ -158,9 +158,10 @@ function data_generate(rows,bean){
 	var divName = bean + "_tableData";
 	/** 清空之前数据*/
 	$("#"+divName).html();
+	
 	for(var j=0; j < rows.length; j++){
 		$("#"+divName).append("<tr class='text-c' id='tr_"+j+"'>");
-		$("#tr_"+j).append("<td><input type='checkbox'/></td>");
+		$("#tr_"+j).append("<td><input type='checkbox' name='"+bean+"_checkbox' value='"+rows[j].ID+"'/></td>");
 		for(var k=0; k<params_size; k++){
 			if(rows[j][params[k]] == undefined){
 				rows[j][params[k]] = '-';

@@ -7,6 +7,11 @@ package com.basic.model.base;
  */
 public interface ReturnData {
 	
+	/** 未知错误**/
+	String UNKNOWN_ERROR_CODE = "9999";
+	
+	String UNKNOWN_ERROR_MSG = "未知错误";
+	
 	/** 处理成功**/
 	String SUCCESS_CODE = "0000";
 	

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.basic.model.sys.role.SysRole;
 import com.basic.service.base.IBaseService;
 /**
  * 角色service
@@ -21,4 +22,31 @@ public interface ISysRoleService extends IBaseService{
 	 */
 	@Transactional
 	String addRoleOperation(Map<String,Object> params);
+	
+	/**
+	 * 根据id或者code或者name进行查询
+	 * 
+	 * @param 
+	 * @return SysRole
+	 */
+	@Transactional
+	SysRole loadByParam(Map<String,Object> params);
+	
+	/**
+	 * 编辑处理
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	String editRoleOperation(Map<String,Object> params);
+	
+	/**
+	 * 删除
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	String remove(String ids);
 }

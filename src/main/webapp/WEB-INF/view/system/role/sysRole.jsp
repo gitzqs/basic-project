@@ -30,17 +30,21 @@
 	<div class="cl pd-5 bg-1 bk-gray"> 
 		<span class="l"> 
 			<a class="btn btn-primary radius" href="javascript:;" onclick="add('新增角色','${ctx}/sysRole/add','400','300')"><i class="Hui-iconfont">&#xe600;</i> 新增</a> 
-			<a href="javascript:;" onclick="datadel()" class="btn btn-edit2 radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a> 
+			<a href="javascript:;" onclick="edit('编辑','${ctx}/sysRole/edit','400','300','sysRole')" class="btn btn-edit2 radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+			<a href="javascript:;" onclick="remove('sysRole');" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a> 
 		</span>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
-			<tr>
-				<th scope="col" colspan="6">角色管理</th>
+			<tr class="text-c">
+				<th></th>
+				<th><input class="tail_table_query_input" type="text" /></th>
+				<th><input class="tail_table_query_input" type="text" /></th>
+				<th><input class="tail_table_query_input" type="text" /></th>
+				<th><input class="tail_table_query_input" type="text" /></th>
 			</tr>
 			<tr class="text-c" id="sysRole_tr">
-				<th><input type="checkbox" value="" name=""></th>
+				<th><input type="checkbox" value="" ></th>
 				<th>ID</th>
 				<th>角色编码</th>
 				<th>角色名称</th>
