@@ -197,4 +197,9 @@ public class DefaultSysRoleServiceImpl implements ISysRoleService {
 		return JacksonUtils.object2json(params);
 	}
 
+	@Override
+	public List<SysRole> loadAll() {
+		return sysRoleMapper.loadAll();
+	}
+
 }

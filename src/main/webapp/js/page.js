@@ -2,13 +2,18 @@ var strPath = window.document.location.pathname;
 var postPath = strPath.substring(0, strPath.substr(1).indexOf('/') + 1);
 
 /**  分页查询主函数*/
-function page(curPage,pageSize,bean){
-	var map = {
-			bean : bean,
-			method : 'page',
-			offset : (curPage -1) * pageSize,
-			rows : pageSize
-	};
+function page(curPage,pageSize){
+	var bean = $("#bean").val();
+	if((curPage != undefined || curPage != null) && 
+			(pageSize != undefined || pageSize !=null)){
+		$("#"+bean+"_offset").val((curPage -1) * pageSize);
+		$("#"+bean+"_rows").val(pageSize);
+	}
+	
+	var map = $("#"+bean+"_requestForm").serialize();
+	pageSize = $("#"+bean+"_rows").val();
+	curPage = $("#"+bean+"_offset").val()/pageSize + 1;
+	
 	$.ajax({
 		url : postPath+"/base/page",
 		type : 'POST',
@@ -120,27 +125,27 @@ function setTailNavigationTwo(total,curPage,pageSize,bean){
 
 /** 首页*/
 function goFirstPage(bean,pageSize){
-	page(1,pageSize,bean);
+	page(1,pageSize);
 }
 
 /** 上一页*/
 function goPrePage(curPage,bean,pageSize){
-	page(parseInt(curPage)-1,pageSize,bean);
+	page(parseInt(curPage)-1,pageSize);
 }
 
 /** 尾页*/
 function goLastPage(total_page,bean,pageSize){
-	page(parseInt(total_page),pageSize,bean);
+	page(parseInt(total_page),pageSize);
 }
 
 /** 下一页*/
 function goNextPage(curPage,bean,pageSize){
-	page(parseInt(curPage)+1,pageSize,bean);
+	page(parseInt(curPage)+1,pageSize);
 }
 
 /** 输入页码直接跳转*/
 function setPageNumber(number,bean,pageSize){
-	page(parseInt(number.val()),pageSize,bean);
+	page(parseInt(number.val()),pageSize);
 }
 
 /** 数据生成*/
@@ -158,25 +163,30 @@ function data_generate(rows,bean){
 	var divName = bean + "_tableData";
 	/** 清空之前数据*/
 	$("#"+divName).html();
-	
-	for(var j=0; j < rows.length; j++){
-		$("#"+divName).append("<tr class='text-c' id='tr_"+j+"'>");
-		$("#tr_"+j).append("<td><input type='checkbox' name='"+bean+"_checkbox' value='"+rows[j].ID+"'/></td>");
-		for(var k=0; k<params_size; k++){
-			if(rows[j][params[k]] == undefined){
-				rows[j][params[k]] = '-';
+	if(rows.length == 0){
+		$("#"+divName).append("<tr>没有找到数据。</tr>");
+	}else{
+		for(var j=0; j < rows.length; j++){
+			$("#"+divName).append("<tr class='text-c' id='tr_"+j+"'>");
+			$("#tr_"+j).append("<td><input type='checkbox' name='"+bean+"_checkbox' value='"+rows[j].ID+"'/></td>");
+			for(var k=0; k<params_size; k++){
+				if(rows[j][params[k]] == undefined){
+					rows[j][params[k]] = '-';
+				}
+				$("#tr_"+j).append("<td>"+rows[j][params[k]]+"</td>");
 			}
-			$("#tr_"+j).append("<td>"+rows[j][params[k]]+"</td>");
+			$("#"+divName).append("</tr>");
 		}
-		$("#"+divName).append("</tr>");
 	}
+	
+	
 }
 
 /** 改变分页行数*/
 function changeRowNumber(bean){
 	var idName_select = bean+"_select";
 	var number = $("#"+idName_select+" option:selected").text();
-	page(1,parseInt(number),bean);
+	page(1,parseInt(number));
 }
 
 

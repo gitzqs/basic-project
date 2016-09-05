@@ -21,6 +21,9 @@
 </head>
 <body>
 	WELCOME!
-	<input type="button" value="test" onclick="test();"/>
+	<div style="display:none">
+		111
+	</div>
+	<input type="hidden" value="test" onclick="test();"/>
 </body>
 </html>

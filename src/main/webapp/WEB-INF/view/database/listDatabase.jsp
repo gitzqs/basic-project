@@ -18,7 +18,7 @@
 
 <script type="text/javascript">
 	$(function(){
-		 page(1,5,'userDatabase');
+		 page(1,5);
 	});
 </script>
 
@@ -34,10 +34,29 @@
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a> 
 		</span>
 	</div>
+	
+	<!-- 查询条件 begin -->
+	<div style="display:none" >
+		<form id="userDatabase_requestForm">
+			<input type="hidden" id="bean" name="bean" value="userDatabase">
+			<input type="hidden" id="userDatabase_method" name="method" value="page">
+			<input type="hidden" id="userDatabase_offset" name="offset" value="0">
+			<input type="hidden" id="userDatabase_rows" name="rows" value="5">
+			
+			<input type="hidden" id="id" name="id"/>
+			<input type="hidden" id="code" name="username"/>
+			<input type="hidden" id="name" name="databaseName"/>
+		</form>
+	</div>
+	<!-- 查询条件 end -->
+	
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
-			<tr>
-				<th scope="col" colspan="6">数据库管理</th>
+			<tr class="text-c">
+				<th></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'id');"/></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'username');"/></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'databaseName');"/></th>
 			</tr>
 			<tr class="text-c" id="userDatabase_tr">
 				<th><input type="checkbox" value="" name=""></th>

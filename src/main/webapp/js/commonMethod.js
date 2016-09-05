@@ -121,6 +121,12 @@ function remove(bean){
 	
 }
 
+/** 查询**/
+function queryForm(val,id,bean){
+	$("#"+id).val(val.val());
+	page();
+}
+
 /************  表单验证   ******************/
 $.extend($.validator.messages, {
     required: "必填字段",

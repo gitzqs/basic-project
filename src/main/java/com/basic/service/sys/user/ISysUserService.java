@@ -1,5 +1,7 @@
 package com.basic.service.sys.user;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -31,4 +33,13 @@ public interface ISysUserService extends IBaseService{
 	 */
 	@Transactional
 	String registerAdd(String username,String password,String password_again,HttpServletRequest request);
+	
+	/**
+	 * 新增处理
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	String add(Map<String,Object> params);
 }

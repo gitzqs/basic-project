@@ -21,7 +21,7 @@
 <script type="text/javascript" src="${ctx}/js/admin/H-ui.admin.js"></script> 
 <script type="text/javascript">
 	$(function(){
-		 page(1,5,'sysUser');
+		 page(1,5);
 	});
 </script>
 
@@ -32,15 +32,31 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray"> 
 		<span class="l"> 
-			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','admin-role-add.html','800')"><i class="Hui-iconfont">&#xe600;</i> 新增</a> 
-			<a href="javascript:;" onclick="datadel()" class="btn btn-edit2 radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a> 
+			<a class="btn btn-primary radius" href="javascript:;" onclick="add('添加用户','${ctx}/sysUser/add','600','450')"><i class="Hui-iconfont">&#xe600;</i> 新增</a> 
+			<a href="javascript:;" onclick="edit('编辑','${ctx}/sysUser/edit','400','300','sysUser')" class="btn btn-edit2 radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+			<a href="javascript:;" onclick="remove('sysRole');" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a> 
 		</span>
+	</div>
+	
+	<div style="display:none">
+		<form id="sysUser_requestForm">
+			<input type="hidden" id="bean" name="bean" value="sysUser">
+			<input type="hidden" id="sysUser_method" name="method" value="page">
+			<input type="hidden" id="sysUser_offset" name="offset" value="0">
+			<input type="hidden" id="sysUser_rows" name="rows" value="5">
+			
+			<input type="hidden" id="id" name="id"/>
+			<input type="hidden" id="username" name="username"/>
+			<input type="hidden" id="status" name="status">
+		</form>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
-			<tr>
-				<th scope="col" colspan="6">角色管理</th>
+			<tr class="text-c">
+				<th></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'id');"/></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'username');"/></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'status');"/></th>
 			</tr>
 			<tr class="text-c" id="sysUser_tr">
 				<th><input type="checkbox" value="" name=""></th>
@@ -76,25 +92,5 @@
 	</div>
 	<!-- 尾部导航 end -->
 </div>
-<script type="text/javascript">
-/*管理员-角色-添加*/
-function admin_role_add(title,url,w,h){
-	layer_show(title,url,w,h);
-}
-/*管理员-角色-编辑*/
-function admin_role_edit(title,url,id,w,h){
-	layer_show(title,url,w,h);
-}
-/*管理员-角色-删除*/
-function admin_role_del(obj,id){
-	layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
-		//此处请求后台程序，下方是成功后的前台处理……
-		
-		
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
-	});
-}
-</script>
 </body>
 </html>

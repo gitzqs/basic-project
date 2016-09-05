@@ -131,10 +131,12 @@
 	</delete>
 	<!-- 批量删除 end -->
 	
-	<!-- 根据id删除 begin -->
-	<!-- <delete id="deleteById">
-	
-	</delete> -->
-	<!-- 根据id删除 end -->
+	<!-- 获取全部角色 begin -->
+	<select id="loadAll" resultMap="sysRoleMap">
+		SELECT ID,NAME
+		<include refid="sql_table"/>
+		WHERE STATUS = 'ENABLED'
+	</select>
+	<!-- 获取全部角色 end -->
 	
 </mapper>

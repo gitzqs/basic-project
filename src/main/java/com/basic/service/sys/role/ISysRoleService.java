@@ -1,5 +1,6 @@
 package com.basic.service.sys.role;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -49,4 +50,13 @@ public interface ISysRoleService extends IBaseService{
 	 */
 	@Transactional
 	String remove(String ids);
+	
+	/**
+	 * 获取全部角色
+	 * 
+	 * @param 
+	 * @return List<SysRole>
+	 */
+	@Transactional
+	List<SysRole> loadAll();
 }

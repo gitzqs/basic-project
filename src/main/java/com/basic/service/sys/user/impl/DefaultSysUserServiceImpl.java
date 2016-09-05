@@ -137,4 +137,52 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		return JacksonUtils.object2json(returnParams);
 	}
 
+	@Override
+	public String add(Map<String, Object> params) {
+		//初始化
+		Map<String,Object> returnParams = new HashMap<String,Object>();
+		String returnCode = ReturnData.SUCCESS_CODE;
+		String returnMsg = "新增用户成功！";
+		
+		String username = params.get("username")==null ? StringUtils.EMPTY : params.get("username").toString();
+		String password = params.get("password")==null ? StringUtils.EMPTY : params.get("password").toString();
+		String passwordAgain = params.get("password_again")==null ? StringUtils.EMPTY : params.get("password_again").toString();
+		
+		//1、验证参数是否为空
+		if(!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)){
+			//2、验证两次输入密码是否一样
+			if(password.equals(passwordAgain)){
+				//3、验证用户名是否存在
+				SysUser user = sysUserMapper.loadByUsername(username);
+				if(null == user){
+					//4、存储
+					SysUser sysUser = new SysUser();
+					sysUser.setUsername(username);
+					sysUser.setPassword(DigestUtils.md5Hex(password));
+					try{
+						sysUserMapper.insert(sysUser);
+					}catch(Exception e){
+						logger.error("add user failed : [{}]",e);
+						returnCode = ReturnData.UNKNOWN_ERROR_CODE;
+						returnMsg = "新增用户失败！";
+					}
+					
+				}else{
+					returnCode = ReturnData.DATA_EXIST_CODE;
+					returnMsg = "用户名已经存在！";
+				}
+			}else{
+				returnCode = ReturnData.DATA_NOT_EQUAL_CODE;
+				returnMsg = "两次输入密码必须一致！";
+			}
+		}else{
+			returnCode = ReturnData.EMPTY_PARAMETER_CODE;
+			returnMsg = "用户名或者密码不能为空！";
+		}
+		returnParams.put("returnCode", returnCode);
+		returnParams.put("returnMsg", returnMsg);
+		
+		return JacksonUtils.object2json(returnParams);
+	}
+
 }
