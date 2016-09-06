@@ -16,9 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.basic.aop.database.DBContextHolder;
 import com.basic.model.base.EBaseStatus;
-import com.basic.model.database.UserDatabase;
 import com.basic.model.sys.user.SysUser;
 import com.basic.model.sys.userRole.SysUserRole;
 import com.basic.service.database.IUserDatabaseService;
@@ -76,9 +74,9 @@ public class ShiroDbRealm extends AuthorizingRealm{
 				SecurityUtils.getSubject().getSession().setAttribute("user", user);
 				SecurityUtils.getSubject().getSession().setTimeout(1000 * 60 * 60 * 24);//会话时间设置：24h
 				//切换数据库
-				UserDatabase database = userDatabaseService.loadByUserId(user.getId());
-				SecurityUtils.getSubject().getSession().setAttribute("database", database);
-				DBContextHolder.setDbType("dataSource_"+String.valueOf(user.getId()));
+//				UserDatabase database = userDatabaseService.loadByUserId(user.getId());
+//				SecurityUtils.getSubject().getSession().setAttribute("database", database);
+//				DBContextHolder.setDbType("dataSource_"+String.valueOf(user.getId()));
 				return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
 			}else{
 				logger.info("user [{}] authenticated fail with wrong password.", token.getUsername());
