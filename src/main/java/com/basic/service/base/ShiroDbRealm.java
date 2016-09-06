@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.basic.aop.database.DBContextHolder;
-import com.basic.aop.database.DynamicDataSource;
 import com.basic.model.base.EBaseStatus;
 import com.basic.model.database.UserDatabase;
 import com.basic.model.sys.user.SysUser;
@@ -65,7 +64,7 @@ public class ShiroDbRealm extends AuthorizingRealm{
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken anthenticationToken) throws AuthenticationException {
 		//登录时候将数据源切换至默认数据源
-		DBContextHolder.setDbType(DynamicDataSource.DEFAULT_DATA_SOURCE);
+//		DBContextHolder.setDbType(DynamicDataSource.DEFAULT_DATA_SOURCE);
 		
 		UsernamePasswordToken token = (UsernamePasswordToken) anthenticationToken;
 		SysUser user = sysUserService.loadByUsername(token.getUsername());
