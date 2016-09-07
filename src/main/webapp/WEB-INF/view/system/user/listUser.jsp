@@ -47,7 +47,7 @@
 			
 			<input type="hidden" id="id" name="id"/>
 			<input type="hidden" id="username" name="username"/>
-			<input type="hidden" id="status" name="status">
+			<input type="hidden" id="rolename" name="rolename">
 		</form>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
@@ -56,12 +56,13 @@
 				<th></th>
 					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'id');"/></th>
 					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'username');"/></th>
-					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'status');"/></th>
+					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'rolename');"/></th>
 			</tr>
 			<tr class="text-c" id="sysUser_tr">
 				<th><input type="checkbox" value="" name=""></th>
 				<th>ID</th>
 				<th>用户名</th>
+				<th>所属角色</th>
 				<th>用户状态</th>
 				<th>创建人</th>
 				<th>创建时间</th>
@@ -76,6 +77,7 @@
 	<div id="sysUser_paramsDiv" style="display:none">
 		<input type="text" value="ID"/>
 		<input type="text" value="USERNAME"/>
+		<input type="text" value="ROLENAME"/>
 		<input type="text" value="STATUS"/>
 		<input type="text" value="CREATOR"/>
 		<input type="text" value="CREATED_TIME"/>

@@ -19,4 +19,13 @@ public interface ISysUserRoleService{
 	 */
 	@Transactional
 	SysUserRole loadByUsername(String username);
+	
+	/**
+	 * 根据userId获取roleId
+	 * 
+	 * @param 
+	 * @return SysUserRole
+	 */
+	@Transactional
+	SysUserRole loadByUserId(Long userId);
 }

@@ -15,49 +15,31 @@
 <script type="text/javascript" src="${ctx}/js/admin/H-ui.admin.js"></script> 
 <script type="text/javascript">
 	$(function(){
-		add_operation('sysUser');
+		edit_operation('sysUser');
 	});
 </script>
-<title>新增用户</title>
+<title>编辑用户角色</title>
 </head>
 <body>
 <article class="page-container pageContainer_other">
-	<form id="sysUser_add_form" class="form form-horizontal" >
-		<div id="sysUser_div"style="text-align:center;visibility:hidden;margin-top:-12px"><span id="sysUser_span" style="color:red">新增用户成功！</span></div>
+	<form id="sysUser_edit_form" class="form form-horizontal" >
+		<div id="sysUser_div"style="text-align:center;visibility:hidden;margin-top:-12px"><span id="sysUser_span" style="color:red">编辑用户成功！</span></div>
+		<input type="hidden" value="${user.id }" name="userId"/>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text"  id="username" name="username" required>
-			</div>
-		</div>
-		
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录密码：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text"  id="password" name="password" required>
+				<input type="text" class="input-text"  id="username" name="username" value="${user.username}" readonly>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>再次输入密码：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text"  id="password_again" name="password_again" required>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所属角色：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
 				<select class="select" name="roleId" size="1" required>
 					<c:forEach items="${roleList}" var="list">
-						<option value="${list.id}">${list.name}</option>
+						<option value="${list.id}" <c:if test='${list.id eq roleId}'>selected="selected"</c:if>>${list.name}</option>
 					</c:forEach>
 				</select>
 				</span> 
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">备注：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="description">
 			</div>
 		</div>
 

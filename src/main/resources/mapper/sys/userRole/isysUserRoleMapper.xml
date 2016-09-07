@@ -35,4 +35,35 @@
 	</select>
 	<!-- 根据username获取用户角色 end -->
 	
+	<!-- 用户关联角色 begin -->
+	<insert id="insert" parameterType="Map">
+		INSERT INTO SYS_USER_ROLE(USER_ID,ROLE_ID,STATUS,CREATOR_ID,CREATOR,CREATED_TIME)VALUES(
+			#{userId},#{roleId},'ENABLED',#{creatorId},#{creator},#{createdTime}
+		)
+	</insert>
+	<!-- 用户关联角色 end -->
+	
+	<!-- 根据用户id获取用户角色id begin-->
+	<select id="loadByUserId" parameterType="Long" resultMap="sysUserRoleMap">
+		SELECT ROLE_ID 
+		FROM SYS_USER_ROLE
+		WHERE USER_ID = #{userId}
+			AND STATUS = 'ENABLED'
+	</select>
+	<!-- 根据用户id获取用户角色id end-->
+	
+	<!-- 更新用户角色 begin -->
+	<update id="updateRole" parameterType="Map">
+		UPDATE SYS_USER_ROLE
+		SET
+			ROLE_ID = #{roleId},
+			LAST_OPERATOR_ID = #{lastOperatorId},
+			LAST_OPERATOR = #{lastOperator},
+			LAST_OPERATED_TIME = #{lastOperatedTime}
+		WHERE
+			USER_ID = #{userId}
+		AND STATUS = 'ENABLED'
+	</update>
+	<!-- 更新用户角色 end -->
+	
 </mapper>

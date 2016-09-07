@@ -17,4 +17,9 @@ public class DefaultSysUserRoleServiceImpl implements ISysUserRoleService {
 		return sysUserRoleMapper.loadByUsername(username);
 	}
 
+	@Override
+	public SysUserRole loadByUserId(Long userId) {
+		return sysUserRoleMapper.loadByUserId(userId);
+	}
+
 }

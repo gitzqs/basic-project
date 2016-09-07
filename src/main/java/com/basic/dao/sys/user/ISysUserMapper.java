@@ -1,5 +1,7 @@
 package com.basic.dao.sys.user;
 
+import java.util.List;
+
 import com.basic.dao.base.IBaseMapper;
 import com.basic.model.sys.user.SysUser;
 /**
@@ -25,4 +27,12 @@ public interface ISysUserMapper extends IBaseMapper<SysUser>{
 	 * @return int
 	 */
 	int insert(SysUser user);
+	
+	/**
+	 * 按id删除
+	 * 
+	 * @param 
+	 * @return void
+	 */
+	void remove(List<String> idList);
 }

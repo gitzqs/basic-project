@@ -42,4 +42,31 @@ public interface ISysUserService extends IBaseService{
 	 */
 	@Transactional
 	String add(Map<String,Object> params);
+	
+	/**
+	 * 根据id进行查询
+	 * 
+	 * @param 
+	 * @return SysUser
+	 */
+	@Transactional
+	SysUser load(Long id);
+	
+	/**
+	 * 编辑操作
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	String edit(Map<String,Object> params);
+	
+	/**
+	 * 删除操作
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@Transactional
+	String remove(String ids);
 }

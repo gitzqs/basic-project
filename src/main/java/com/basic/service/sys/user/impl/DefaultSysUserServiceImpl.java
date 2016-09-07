@@ -1,5 +1,6 @@
 package com.basic.service.sys.user.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.basic.dao.database.IUserDatabaseMapper;
+import com.basic.dao.sys.role.ISysRoleMapper;
 import com.basic.dao.sys.user.ISysUserMapper;
+import com.basic.dao.sys.userRole.ISysUserRoleMapper;
 import com.basic.model.base.ReturnData;
+import com.basic.model.sys.role.SysRole;
 import com.basic.model.sys.user.SysUser;
 import com.basic.service.sys.user.ISysUserService;
 import com.basic.util.String.StringUtils;
@@ -29,6 +33,12 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 	
 	@Autowired
 	private IUserDatabaseMapper userDatabaseMapper;
+	
+	@Autowired
+	private ISysUserRoleMapper sysUserRoleMapper;
+	
+	@Autowired
+	private ISysRoleMapper sysRoleMapper;
 	
 	private DatabaseCreatorMysql databaseCreator = new DatabaseCreatorMysql();
 	
@@ -147,20 +157,32 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		String username = params.get("username")==null ? StringUtils.EMPTY : params.get("username").toString();
 		String password = params.get("password")==null ? StringUtils.EMPTY : params.get("password").toString();
 		String passwordAgain = params.get("password_again")==null ? StringUtils.EMPTY : params.get("password_again").toString();
+		String roleId = params.get("roleId")==null ? StringUtils.EMPTY : params.get("roleId").toString();
 		
 		//1、验证参数是否为空
-		if(!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)){
+		if(!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(roleId)){
 			//2、验证两次输入密码是否一样
 			if(password.equals(passwordAgain)){
 				//3、验证用户名是否存在
 				SysUser user = sysUserMapper.loadByUsername(username);
 				if(null == user){
-					//4、存储
+					//4、存储用户
 					SysUser sysUser = new SysUser();
 					sysUser.setUsername(username);
 					sysUser.setPassword(DigestUtils.md5Hex(password));
 					try{
 						sysUserMapper.insert(sysUser);
+						//5、关联角色
+						params.clear();
+						params.put("userId", sysUser.getId());
+						params.put("roleId", Long.parseLong(roleId));
+						try{
+							sysUserRoleMapper.insert(params);
+						}catch(Exception e1){
+							logger.error("user associat role failed : [{}]",e1);
+							returnCode = ReturnData.UNKNOWN_ERROR_CODE;
+							returnMsg = "新增用户失败！";
+						}
 					}catch(Exception e){
 						logger.error("add user failed : [{}]",e);
 						returnCode = ReturnData.UNKNOWN_ERROR_CODE;
@@ -177,12 +199,86 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 			}
 		}else{
 			returnCode = ReturnData.EMPTY_PARAMETER_CODE;
-			returnMsg = "用户名或者密码不能为空！";
+			returnMsg = "用户名或者密码或者角色不能为空！";
 		}
 		returnParams.put("returnCode", returnCode);
 		returnParams.put("returnMsg", returnMsg);
 		
 		return JacksonUtils.object2json(returnParams);
+	}
+
+	@Override
+	public SysUser load(Long id) {
+		return sysUserMapper.load(id);
+	}
+
+	@Override
+	public String edit(Map<String, Object> params) {
+		Map<String,Object> returnParams = new HashMap<String,Object>();
+		String returnCode = ReturnData.SUCCESS_CODE;
+		String returnMsg = "编辑用户成功！";
+		
+		String userId = params.get("userId")==null ? StringUtils.EMPTY : params.get("userId").toString();
+		String roleId = params.get("roleId")==null ? StringUtils.EMPTY : params.get("roleId").toString();
+		
+		//1、验证参数是否为空
+		if(!StringUtils.isEmpty(userId) && !StringUtils.isEmpty(roleId)){
+			//2、验证用户是否存在
+			SysUser user = sysUserMapper.load(Long.parseLong(userId));
+			if(user != null){
+				//3、验证角色是否存在
+				params.clear();
+				params.put("id", Long.parseLong(roleId));
+				SysRole role = sysRoleMapper.loadByParam(params);
+				if(role != null){
+					//4、更新用户-角色关系表
+					params.clear();
+					params.put("userId", Long.parseLong(userId));
+					params.put("roleId", Long.parseLong(roleId));
+					try{
+						sysUserRoleMapper.updateRole(params);
+					}catch(Exception e){
+						logger.error("update user's role failed : [{}]",e);
+						returnCode = ReturnData.UNKNOWN_ERROR_CODE;
+						returnMsg = "编辑用户失败";
+					}
+				}else{
+					returnCode = ReturnData.UNKNOWN_DATA_CODE;
+					returnMsg = "角色不存在";
+				}
+			}else{
+				returnCode = ReturnData.UNKNOWN_DATA_CODE;
+				returnMsg = "用户不存在";
+			}
+		}else{
+			returnCode = ReturnData.EMPTY_PARAMETER_CODE;
+			returnMsg = "所属角色不能为空！";
+		}
+		
+		returnParams.put("returnCode", returnCode);
+		returnParams.put("returnMsg", returnMsg);
+		
+		return JacksonUtils.object2json(returnParams);
+	}
+
+	@Override
+	public String remove(String ids) {
+		Map<String,Object> params = new HashMap<String,Object>();
+		String returnCode = ReturnData.SUCCESS_CODE;
+		String returnMsg = "删除成功！";
+		
+		List<String> idList = new ArrayList<String>();
+		if(!StringUtils.isEmpty(ids)){
+			idList = StringUtils.stringToList(ids);
+			sysUserMapper.remove(idList);
+		}else{
+			returnCode = ReturnData.EMPTY_PARAMETER_CODE;
+			returnMsg = "请选中至少一条记录！";
+		}
+		params.put("returnCode", returnCode);
+		params.put("returnMsg", returnMsg);
+		
+		return JacksonUtils.object2json(params);
 	}
 
 }
