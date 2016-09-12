@@ -127,6 +127,21 @@ function queryForm(val,id,bean){
 	page();
 }
 
+/** 导出成excel**/
+function exportExcel(bean){
+	
+	$("#"+bean+"_requestForm").submit();
+}
+
+/** 导出成CVS**/
+function exportCvs(bean){
+	location.href = postPath + "/"+bean+ "/exportCsv";
+}
+
+/** 导出成PDF**/
+function exportPdf(bean){
+	
+}
 /************  表单验证   ******************/
 $.extend($.validator.messages, {
     required: "必填字段",

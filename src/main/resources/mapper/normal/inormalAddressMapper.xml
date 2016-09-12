@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.basic.dao.normal.INormalAddressMapper">
+	<resultMap id="normalAddressMap" type="normalAddress" >
+		<id column="ID" property="id" jdbcType="DECIMAL"/>
+		<result column="LEVEL" property="level" jdbcType="DECIMAL"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="BELONG_TO_LEVEL" property="belongToLevel" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<!-- 根据level 或者belongToLevel 查询 begin -->
+	<select id="loadByParam" parameterType="Map" resultType="Map">
+		SELECT ID,LEVEL,NAME,BELONG_TO_LEVEL
+		FROM ADDRESS
+		<where>
+			1=1
+			<if test="level !=null and level !=''">
+				AND LEVEL = #{level}
+			</if>
+			<if test="belongToLevel !=null and belongToLevel !=''">
+				AND BELONG_TO_LEVEL = #{belongToLevel}
+			</if>
+		</where>
+	</select>
+	<!-- 根据level 或者belongToLevel 查询 end -->
+</mapper>

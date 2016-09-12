@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.basic.model.base.EBaseStatus;
 import com.basic.model.sys.role.SysRole;
 import com.basic.service.sys.role.ISysRoleService;
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
 
 /**
  * 角色管理
@@ -76,7 +76,7 @@ public class RoleController {
 	@RequestMapping(value="/edit",method=RequestMethod.GET)
 	public String edit(Model model,String id){
 		
-		if(!StringUtils.isEmpty(id)){
+		if(!StringUtil.isEmpty(id)){
 			Map<String,Object> param = new HashMap<String,Object>();
 			param.put("id", Long.parseLong(id));
 			param.put("status", EBaseStatus.ENABLED);

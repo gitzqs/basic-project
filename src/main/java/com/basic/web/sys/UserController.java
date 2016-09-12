@@ -1,12 +1,16 @@
 package com.basic.web.sys;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +23,12 @@ import com.basic.model.sys.userRole.SysUserRole;
 import com.basic.service.sys.role.ISysRoleService;
 import com.basic.service.sys.user.ISysUserService;
 import com.basic.service.sys.userRole.ISysUserRoleService;
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
+import com.basic.util.date.DateFormatUtils;
+import com.basic.util.exception.BaseRuntimeException;
+import com.basic.util.poi.FileUtil;
+import com.basic.util.poi.csv.CsvUtil;
+import com.basic.util.poi.excel.ExcelUtil;
 /**
  * 用户
  * 
@@ -29,6 +38,11 @@ import com.basic.util.String.StringUtils;
 @Controller
 @RequestMapping(value="sysUser")
 public class UserController {
+	
+	@Value("${sysUser.headers}")
+	private String INEXTENDLOAN_HEADERS;
+	@Value("${sysUser.propertys}")
+	private String INEXTENDLOAN_PROPERTYS;
 	
 	@Autowired
 	private ISysUserService sysUserService;
@@ -93,7 +107,7 @@ public class UserController {
 		
 		//获取当前角色id
 		String userId = request.getParameter("id");
-		if(!StringUtils.isEmpty(userId)){
+		if(!StringUtil.isEmpty(userId)){
 			SysUser user = sysUserService.load(Long.parseLong(userId));
 			if(user != null){
 				model.addAttribute("user", user);
@@ -133,6 +147,64 @@ public class UserController {
 	@ResponseBody
 	public String remove(String ids){
 		
-		return null;
+		return sysUserService.remove(ids);
+	}
+	
+	@RequestMapping(value = "/exportXls", method = RequestMethod.GET)
+	public void exportXls(HttpServletRequest request,
+			HttpServletResponse response) {
+		Map<String,Object> params = new HashMap<String,Object>();
+		try {
+//			Map<String, Object> maps = MapUtils.requestObjMap(request);
+			String[] bisTransLocation_headers = org.springframework.util.StringUtils
+					.tokenizeToStringArray(INEXTENDLOAN_HEADERS, ",");
+			String[] bisTransLocation_propertys = org.springframework.util.StringUtils
+					.tokenizeToStringArray(INEXTENDLOAN_PROPERTYS, ",");
+			ExcelUtil.export2Excel(sysUserService, request, response,
+					params, bisTransLocation_headers, bisTransLocation_propertys,
+					"用户");
+		}
+		catch (Exception e) {
+			throw new BaseRuntimeException("用户导出失败:"+e);
+		}
+	}
+	
+	/**
+	 * 导出成csv
+	 * 
+	 * @param 
+	 * @return void
+	 */
+	@RequestMapping(value="/exportCsv",method = RequestMethod.GET)
+	public void exportCsv(HttpServletRequest request,HttpServletResponse response){
+		Map<String,Object> params = new HashMap<String,Object>();
+		//头部信息
+		List<Object> head = com.basic.util.String.StringUtil.stringToList2(INEXTENDLOAN_HEADERS);
+		
+		//主体数据
+		List<Map<String,Object>> dataList = sysUserService.exportPage(params);
+		
+		String filePath = request.getSession().getServletContext()
+				.getRealPath("/")+"/tempFile/";
+		
+		String filename = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+		
+		CsvUtil.createCSVFile(head, mapToList(dataList), filePath, filename);
+		FileUtil.downFile(response, filePath,filename+".csv");
+		FileUtil.deleteFile(filePath+filename+".csv");
+		
+	}
+	
+	private List<List<Object>> mapToList(List<Map<String,Object>> params){
+		List<List<Object>> newList = new ArrayList<List<Object>>();
+		for(int i=0; i<params.size(); i++){
+			List<Object> object = new ArrayList<Object>();
+			object.add((Object)params.get(i).get("ID"));
+			object.add((Object)params.get(i).get("USERNAME"));
+			object.add((Object)params.get(i).get("ROLENAME"));
+			object.add((Object)params.get(i).get("STATUS"));
+			newList.add(object);
+		}
+		return newList;
 	}
 }

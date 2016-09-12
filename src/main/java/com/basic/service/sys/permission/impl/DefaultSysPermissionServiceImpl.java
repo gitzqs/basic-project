@@ -22,6 +22,7 @@ public class DefaultSysPermissionServiceImpl implements ISysPermissionService {
 		//当offset跟rows出现没有值的情况，赋值默认
 		params.put("offset", Integer.parseInt((params.get("offset")==null ? '0' : params.get("offset")).toString()));
 		params.put("rows", Integer.parseInt((params.get("rows")==null ? '5' : params.get("rows")).toString()));
+		params.put("parentId", 0);
 		List<Map<String,Object>> rows = (List<Map<String,Object>>)
 				sysPermissionMapper.page(params);
 		Long total = sysPermissionMapper.total(params);

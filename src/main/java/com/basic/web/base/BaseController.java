@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.basic.util.BeanMethodInvocation;
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
 import com.basic.util.json.JacksonUtils;
 
 /**
@@ -35,7 +35,7 @@ public class BaseController {
 	public String page(HttpServletRequest request){
 		Map<String, String[]> paramsMap = request.getParameterMap();
 		//初始化
-		String jsonResult = StringUtils.EMPTY;
+		String jsonResult = StringUtil.EMPTY;
 		
 		 Map<String, Object> map = new HashMap<String, Object>();
 	     Set<Entry<String, String[]>> entrySet = paramsMap.entrySet();
@@ -43,13 +43,13 @@ public class BaseController {
 	          map.put(entry.getKey(), entry.getValue()[0]);
 	     }
 		String beanName = (String) map.get("bean");
-		if(StringUtils.isEmpty(beanName)){
+		if(StringUtil.isEmpty(beanName)){
 			logger.error("beanName must not be null!");
 			return jsonResult;
 		}
 		
 		String methodName = (String) map.get("method");
-		if(StringUtils.isEmpty(methodName)){
+		if(StringUtil.isEmpty(methodName)){
 			logger.error("methodName must not be null !");
 			return jsonResult;
 		}

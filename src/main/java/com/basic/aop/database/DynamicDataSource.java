@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import com.basic.model.database.UserDatabase;
 import com.basic.service.database.IUserDatabaseService;
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
 /**
  * 动态切换数据源
  * 
@@ -27,7 +27,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource{
 	@Override
 	protected Object determineCurrentLookupKey() {
 		String dataSourceName = DBContextHolder.getDbType();
-		if(StringUtils.isEmpty(dataSourceName)){
+		if(StringUtil.isEmpty(dataSourceName)){
 			dataSourceName = DEFAULT_DATA_SOURCE;
 		}else{
 			if(!dataSourceName.equals(DEFAULT_DATA_SOURCE)){

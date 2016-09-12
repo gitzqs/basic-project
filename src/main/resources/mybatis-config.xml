@@ -41,6 +41,10 @@
 		<typeAlias type="com.basic.model.database.UserDatabase" alias="userDatabase"/>
 		<!-- database end -->
 		
+		<!-- normal begin -->
+		<typeAlias type="com.basic.model.normal.NormalAddress" alias="normalAddress"/>
+		<!-- normal end -->
+		
 	</typeAliases>
 	
 	<!-- 自定义mybatis jdbcType -->

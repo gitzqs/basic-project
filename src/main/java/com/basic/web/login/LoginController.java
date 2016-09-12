@@ -1,6 +1,7 @@
 package com.basic.web.login;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.basic.service.normal.INormalAddressService;
 import com.basic.service.sys.user.ISysUserService;
 import com.basic.util.http.HttpRequestInfoUtil;
 import com.basic.util.json.JacksonUtils;
@@ -37,6 +40,9 @@ public class LoginController {
 	 
 	 @Autowired
 	 private ISysUserService sysUserService;
+	 
+	 @Autowired
+	 private INormalAddressService normalAddressService;
 	
 	/**
 	 * 登录页面
@@ -95,16 +101,68 @@ public class LoginController {
 		return "login/register";
 	}
 	
+	
+	
+	/**
+	 * 注册新增操作
+	 * 
+	 * @param 
+	 * @return String
+	 */
 	@RequestMapping(value="/register_add",method=RequestMethod.POST)
 	@ResponseBody
 	public String register_add(String username,String password,String password_again,HttpServletRequest request){
 		
 		return sysUserService.registerAdd(username, password, password_again, request);
 	}
-	
+	/**
+	 * 联动测试
+	 * 
+	 * @param 
+	 * @return String
+	 */
 	@RequestMapping(value="/welcome")
-	public String welcome(){
+	public String welcome(Model model){
+		//获取洲的数量
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("level", 1);
+		List<Map<String,Object>> addressList = normalAddressService.loadByParam(params);
+		model.addAttribute("addressList", addressList);
 		return "welcome/welcome";
+	}
+	
+	/**
+	 * 联动测试
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@RequestMapping(value="/address_operation",method=RequestMethod.POST)
+	@ResponseBody
+	public String addressOperate(String id){
+		
+		return normalAddressService.address_operate(id);
+	}
+	/**
+	 * 地图测试
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@RequestMapping(value="/map",method=RequestMethod.GET)
+	public String map(){
+		return "welcome/map_6";
+	}
+	
+	/**
+	 * highcharts导出
+	 * 
+	 * @param 
+	 * @return String
+	 */
+	@RequestMapping(value="/highcharts",method=RequestMethod.GET)
+	public String 	exportHighcharts(){
+		return "welcome/highchartsExport";
 	}
 	
 }

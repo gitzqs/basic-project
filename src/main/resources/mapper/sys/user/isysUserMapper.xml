@@ -108,4 +108,13 @@
 	</delete>
 	<!-- 按id删除 end -->
 	
+	<!-- 导出成excel begin -->
+	<select id="exportPage" parameterType="Map" resultType="Map">
+		SELECT
+		<include refid="base_column"/>
+		<include refid="sql_table"/>
+		<include refid="sql_where"/>
+	</select>
+	<!-- 导出成excel end -->
+	
 </mapper>

@@ -54,3 +54,9 @@
 	height:30px;
 	text-align:center;
 }
+
+.btn-export{
+	color:#8B008B;
+	background-color:#8B008B;
+	border-color:#8B008B
+}

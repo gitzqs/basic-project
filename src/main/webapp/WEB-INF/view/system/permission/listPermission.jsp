@@ -15,6 +15,7 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/css/admin/icheck/icheck.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/style.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/zTreeStyle.css" />
 
 <script type="text/javascript" src="${ctx}/js/layer.js"></script>  
 <script type="text/javascript" src="${ctx}/js/WdatePicker.js"></script> 
@@ -45,38 +46,17 @@
 			<input type="hidden" id="sysPermission_method" name="method" value="page">
 			<input type="hidden" id="sysPermission_offset" name="offset" value="0">
 			<input type="hidden" id="sysPermission_rows" name="rows" value="5">
-			
-			<input type="hidden" id="id" name="id"/>
-			<input type="hidden" id="code" name="code"/>
-			<input type="hidden" id="name" name="name"/>
-			<input type="hidden" id="status" name="status">
 		</form>
 	</div>
 	<!-- 查询条件 end -->
-	
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
-			<tr class="text-c">
-				<th></th>
-					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'id');"/></th>
-					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'code');"/></th>
-					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'name');"/></th>
-					<th><input class="tail_table_query_input" type="text" onkeyup="javascript:queryForm($(this),'status');"/></th>
-			</tr>
 			<tr class="text-c" id="sysPermission_tr">
 				<th><input type="checkbox" value="" name=""></th>
-				<th>ID</th>
-				<th>权限编码</th>
 				<th>权限名称</th>
-				<th>上级权限</th>
 				<th>权限类型</th>
 				<th>权限地址</th>
 				<th>优先级</th>
-				<th>状态</th>
-				<th>创建人</th>
-				<th>创建时间</th>
-				<th>最后修改人</th>
-				<th>最后修改时间</th>
 			</tr>
 		</thead>
 		<tbody id="sysPermission_tableData">
@@ -84,20 +64,11 @@
 	</table>
 	
 	<div id="sysPermission_paramsDiv" style="display:none">
-		<input type="text" value="ID"/>
-		<input type="text" value="CODE"/>
 		<input type="text" value="NAME"/>
-		<input type="text" value="PARENT_PERMISSION_NAME"/>
 		<input type="text" value="TYPE"/>
-		
 		<input type="text" value="URL"/>
 		<input type="text" value="PRIORITY"/>
-		<input type="text" value="STATUS"/>
 		
-		<input type="text" value="CREATOR"/>
-		<input type="text" value="CREATED_TIME"/>
-		<input type="text" value="LAST_OPERATOR"/>
-		<input type="text" value="LAST_OPERATED_TIME"/>
 	</div>
 	
 	<!-- 尾部导航 begin -->
@@ -109,26 +80,5 @@
 	</div>
 	<!-- 尾部导航 end -->
 </div>
-<script type="text/javascript">
-
-/*管理员-角色-添加*/
-function admin_role_add(title,url,w,h){
-	layer_show(title,url,w,h);
-}
-/*管理员-角色-编辑*/
-function admin_role_edit(title,url,id,w,h){
-	layer_show(title,url,w,h);
-}
-/*管理员-角色-删除*/
-function admin_role_del(obj,id){
-	layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
-		//此处请求后台程序，下方是成功后的前台处理……
-		
-		
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',{icon:1,time:1000});
-	});
-}
-</script>
 </body>
 </html>

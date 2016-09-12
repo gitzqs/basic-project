@@ -14,7 +14,7 @@ import com.basic.dao.sys.role.ISysRoleMapper;
 import com.basic.model.base.ReturnData;
 import com.basic.model.sys.role.SysRole;
 import com.basic.service.sys.role.ISysRoleService;
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
 import com.basic.util.json.JacksonUtils;
 @Service("sysRoleService")
 public class DefaultSysRoleServiceImpl implements ISysRoleService {
@@ -54,12 +54,12 @@ public class DefaultSysRoleServiceImpl implements ISysRoleService {
 		String returnMsg = "新增角色成功";
 		
 		//1、获取参数
-		String code = params.get("code")==null ? StringUtils.EMPTY : params.get("code").toString();
-		String name = params.get("name")==null ? StringUtils.EMPTY : params.get("name").toString();
-		String description = params.get("description")==null ? StringUtils.EMPTY : params.get("description").toString();
+		String code = params.get("code")==null ? StringUtil.EMPTY : params.get("code").toString();
+		String name = params.get("name")==null ? StringUtil.EMPTY : params.get("name").toString();
+		String description = params.get("description")==null ? StringUtil.EMPTY : params.get("description").toString();
 		
 		//2、验证code、name是否为空
-		if(!StringUtils.isEmpty(code) && !StringUtils.isEmpty(name)){
+		if(!StringUtil.isEmpty(code) && !StringUtil.isEmpty(name)){
 			//3、验证code是否唯一
 			params.clear();
 			params.put("code", code);
@@ -116,18 +116,18 @@ public class DefaultSysRoleServiceImpl implements ISysRoleService {
 		String returnMsg = "编辑角色成功!";
 
 		// 获取参数
-		String id = params.get("id") == null ? StringUtils.EMPTY 
+		String id = params.get("id") == null ? StringUtil.EMPTY 
 				: params.get("id").toString();
-		String code = params.get("code") == null ? StringUtils.EMPTY 
+		String code = params.get("code") == null ? StringUtil.EMPTY 
 				: params.get("code").toString();
-		String name = params.get("name") == null ? StringUtils.EMPTY 
+		String name = params.get("name") == null ? StringUtil.EMPTY 
 				: params.get("name").toString();
-		String description = params.get("description") == null ? StringUtils.EMPTY
+		String description = params.get("description") == null ? StringUtil.EMPTY
 				: params.get("description").toString();
 
 		// 1、验证id是否存在
-		if (!StringUtils.isEmpty(id)) {
-			if(!StringUtils.isEmpty(code) && !StringUtils.isEmpty(name)){
+		if (!StringUtil.isEmpty(id)) {
+			if(!StringUtil.isEmpty(code) && !StringUtil.isEmpty(name)){
 				// 2、验证code是否唯一
 				params.clear();
 				params.put("code", code);
@@ -184,8 +184,8 @@ public class DefaultSysRoleServiceImpl implements ISysRoleService {
 		String returnMsg = "删除成功！";
 		
 		List<String> idList = new ArrayList<String>();
-		if(!StringUtils.isEmpty(ids)){
-			idList = StringUtils.stringToList(ids);
+		if(!StringUtil.isEmpty(ids)){
+			idList = StringUtil.stringToList(ids);
 			sysRoleMapper.remove(idList);
 		}else{
 			returnCode = ReturnData.EMPTY_PARAMETER_CODE;

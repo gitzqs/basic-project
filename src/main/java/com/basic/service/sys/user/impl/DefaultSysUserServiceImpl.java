@@ -22,7 +22,7 @@ import com.basic.model.base.ReturnData;
 import com.basic.model.sys.role.SysRole;
 import com.basic.model.sys.user.SysUser;
 import com.basic.service.sys.user.ISysUserService;
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
 import com.basic.util.json.JacksonUtils;
 import com.basic.util.mysql.DatabaseCreatorMysql;
 @Service("sysUserService")
@@ -89,7 +89,7 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		String returnMsg = "注册失败";
 		
 		//1、判断参数是否为空
-		if(!StringUtils.isEmpty(username)&& !StringUtils.isEmpty(password)){
+		if(!StringUtil.isEmpty(username)&& !StringUtil.isEmpty(password)){
 			//2、验证两次输入密码是否相同
 			if(password.equals(password_again)){
 				//3、验证用户名是否存在
@@ -154,13 +154,13 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		String returnCode = ReturnData.SUCCESS_CODE;
 		String returnMsg = "新增用户成功！";
 		
-		String username = params.get("username")==null ? StringUtils.EMPTY : params.get("username").toString();
-		String password = params.get("password")==null ? StringUtils.EMPTY : params.get("password").toString();
-		String passwordAgain = params.get("password_again")==null ? StringUtils.EMPTY : params.get("password_again").toString();
-		String roleId = params.get("roleId")==null ? StringUtils.EMPTY : params.get("roleId").toString();
+		String username = params.get("username")==null ? StringUtil.EMPTY : params.get("username").toString();
+		String password = params.get("password")==null ? StringUtil.EMPTY : params.get("password").toString();
+		String passwordAgain = params.get("password_again")==null ? StringUtil.EMPTY : params.get("password_again").toString();
+		String roleId = params.get("roleId")==null ? StringUtil.EMPTY : params.get("roleId").toString();
 		
 		//1、验证参数是否为空
-		if(!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(roleId)){
+		if(!StringUtil.isEmpty(username) && !StringUtil.isEmpty(password) && !StringUtil.isEmpty(roleId)){
 			//2、验证两次输入密码是否一样
 			if(password.equals(passwordAgain)){
 				//3、验证用户名是否存在
@@ -218,11 +218,11 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		String returnCode = ReturnData.SUCCESS_CODE;
 		String returnMsg = "编辑用户成功！";
 		
-		String userId = params.get("userId")==null ? StringUtils.EMPTY : params.get("userId").toString();
-		String roleId = params.get("roleId")==null ? StringUtils.EMPTY : params.get("roleId").toString();
+		String userId = params.get("userId")==null ? StringUtil.EMPTY : params.get("userId").toString();
+		String roleId = params.get("roleId")==null ? StringUtil.EMPTY : params.get("roleId").toString();
 		
 		//1、验证参数是否为空
-		if(!StringUtils.isEmpty(userId) && !StringUtils.isEmpty(roleId)){
+		if(!StringUtil.isEmpty(userId) && !StringUtil.isEmpty(roleId)){
 			//2、验证用户是否存在
 			SysUser user = sysUserMapper.load(Long.parseLong(userId));
 			if(user != null){
@@ -268,8 +268,8 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		String returnMsg = "删除成功！";
 		
 		List<String> idList = new ArrayList<String>();
-		if(!StringUtils.isEmpty(ids)){
-			idList = StringUtils.stringToList(ids);
+		if(!StringUtil.isEmpty(ids)){
+			idList = StringUtil.stringToList(ids);
 			sysUserMapper.remove(idList);
 		}else{
 			returnCode = ReturnData.EMPTY_PARAMETER_CODE;
@@ -279,6 +279,11 @@ public class DefaultSysUserServiceImpl implements ISysUserService {
 		params.put("returnMsg", returnMsg);
 		
 		return JacksonUtils.object2json(params);
+	}
+
+	@Override
+	public List<Map<String, Object>> exportPage(Map<String, Object> params) {
+		return sysUserMapper.exportPage(params);
 	}
 
 }

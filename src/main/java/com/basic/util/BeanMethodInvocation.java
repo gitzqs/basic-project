@@ -10,7 +10,7 @@ import org.apache.commons.beanutils.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.basic.util.String.StringUtils;
+import com.basic.util.String.StringUtil;
 import com.basic.util.exception.BaseRuntimeException;
 import com.basic.util.exception.BusinessLayerException;
 
@@ -28,7 +28,7 @@ public class BeanMethodInvocation {
 		//初始化返回值
 		Object methodResult = null;
 		
-		if(StringUtils.isEmpty(targetBeanName)){
+		if(StringUtil.isEmpty(targetBeanName)){
 			logger.error("targetBeanName must not be null or empty!");
 			throw new  BusinessLayerException("targetBeanName must not be null or empty!");
 		}

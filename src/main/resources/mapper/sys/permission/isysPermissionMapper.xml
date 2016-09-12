@@ -45,6 +45,10 @@
 		<if test="code !=null and code !=''">
 			AND s1.CODE = #{code}
 		</if>
+		AND s1.PARENT_PERMISSION_ID = #{parentId}
+	
+			
+	
 	</sql>
 	
 	<sql id="orderBy">
@@ -53,7 +57,7 @@
 				ORDER BY ${sort} ${order}
 			</when>
 			<otherwise>
-				ORDER BY s1.ID
+				ORDER BY s1.PRIORITY
 			</otherwise>
 		</choose>
 	</sql>

@@ -34,12 +34,14 @@
 		<span class="l"> 
 			<a class="btn btn-primary radius" href="javascript:;" onclick="add('添加用户','${ctx}/sysUser/add','600','450')"><i class="Hui-iconfont">&#xe600;</i> 新增</a> 
 			<a href="javascript:;" onclick="edit('编辑','${ctx}/sysUser/edit','400','300','sysUser')" class="btn btn-edit2 radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-			<a href="javascript:;" onclick="remove('sysRole');" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a> 
+			<a href="javascript:;" onclick="remove('sysUser');" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+			<a href="javascript:;" onclick="exportExcel('sysUser');" class="btn  radius"><i class="Hui-iconfont">&#xe644;</i> 导出成excel</a>
+			<a href="javascript:;" onclick="exportCvs('sysUser');" class="btn  radius"><i class="Hui-iconfont">&#xe644;</i> 导出成CVS</a> 
 		</span>
 	</div>
 	
 	<div style="display:none">
-		<form id="sysUser_requestForm">
+		<form id="sysUser_requestForm" action="${ctx}/sysUser/exportXls">
 			<input type="hidden" id="bean" name="bean" value="sysUser">
 			<input type="hidden" id="sysUser_method" name="method" value="page">
 			<input type="hidden" id="sysUser_offset" name="offset" value="0">

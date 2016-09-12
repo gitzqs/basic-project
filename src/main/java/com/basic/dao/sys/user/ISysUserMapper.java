@@ -1,6 +1,9 @@
 package com.basic.dao.sys.user;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.basic.dao.base.IBaseMapper;
 import com.basic.model.sys.user.SysUser;
@@ -34,5 +37,13 @@ public interface ISysUserMapper extends IBaseMapper<SysUser>{
 	 * @param 
 	 * @return void
 	 */
-	void remove(List<String> idList);
+	void remove(@Param("idList")List<String> idList);
+	
+	/**
+	 * 导出
+	 * 
+	 * @param 
+	 * @return List<Map<String,Object>>
+	 */
+	List<Map<String,Object>> exportPage(Map<String,Object> params);
 }
